@@ -5,6 +5,7 @@ import numpy as np
 # ==================== PAGE CONFIG ====================
 st.set_page_config(page_title="Customer Churn Predictor", page_icon="🏦", layout="wide")
 
+
 # ==================== LOAD MODEL ====================
 @st.cache_resource
 def load_model():
@@ -12,6 +13,7 @@ def load_model():
     scaler.feature_names_in_ = None
     model = joblib.load("Churn_Prediction.joblib")
     return scaler, model
+
 
 scaler, model = load_model()
 
@@ -39,7 +41,7 @@ st.markdown("""
         margin-bottom: 50px;
     }
     .stButton>button {
-        background: linear-gradient(135deg, #ff8c42, #ff6b35);
+        background: linear-gradient(135deg, #ff8c42, #ff6b35) !important;
         color: white !important;
         border-radius: 50px;
         padding: 14px 40px;
@@ -47,6 +49,10 @@ st.markdown("""
         border: none;
         box-shadow: 0 8px 25px rgba(255, 140, 66, 0.4);
         transition: all 0.3s;
+    }
+
+    .stButton>button p {
+        color: white !important;
     }
     .stButton>button:hover {
         transform: translateY(-4px);
@@ -98,15 +104,55 @@ st.markdown("""
     }
 
     /* Radio button option text */
-div[data-testid="stRadio"] label {
-    color: #ffffff !important;
-    font-weight: 500 !important;
-}
+    div[data-testid="stRadio"] label {
+        color: #ffffff !important;
+        font-weight: 500 !important;
+    }
 
+    /* Radio button options (Yes/No/Male/Female) */
+    div[data-testid="stRadio"] label p {
+        color: white !important;
+    }
+
+    div[data-testid="stRadio"] > div > label > div > p {
+        color: white !important;
+    }
 
     /* SLIDER VALUE */
     .stSlider > div > div > div > div > div > div {
         color: white !important;
+    }
+
+    /* PROGRESS BAR - ORANGE COLOR */
+    .stProgress > div > div > div > div {
+        background-color: #ff6b35 !important;
+    }
+
+    /* CAPTION TEXT - WHITE AND LARGER */
+    .stCaptionContainer, [data-testid="stCaptionContainer"] {
+        color: white !important;
+        font-size: 1.3rem !important;
+        font-weight: 600 !important;
+        text-align: center !important;
+    }
+
+    /* EXPANDER - KEEP DARK BACKGROUND */
+    .streamlit-expanderHeader {
+        background-color: transparent !important;
+        color: white !important;
+    }
+
+    .streamlit-expanderContent {
+        background-color: rgba(0, 31, 61, 0.5) !important;
+        border: 1px solid rgba(255, 140, 66, 0.3) !important;
+    }
+
+    div[data-testid="stExpander"] {
+        background-color: transparent !important;
+    }
+
+    div[data-testid="stExpander"] > div {
+        background-color: transparent !important;
     }
 </style>
 """, unsafe_allow_html=True)
@@ -127,14 +173,14 @@ with col2:
 
 # Defaults
 if st.session_state.get("profile") == "safe":
-    defaults = {"credit":720, "age":42, "tenure":8, "balance":50000.0, "products":2,
-                "country":"France", "card":"Yes", "active":"Yes", "salary":80000.0, "gender":"Male"}
+    defaults = {"credit": 720, "age": 42, "tenure": 8, "balance": 50000.0, "products": 2,
+                "country": "France", "card": "Yes", "active": "Yes", "salary": 80000.0, "gender": "Male"}
 elif st.session_state.get("profile") == "risky":
-    defaults = {"credit":376, "age":29, "tenure":4, "balance":115046.0, "products":4,
-                "country":"Germany", "card":"Yes", "active":"No", "salary":119346.0, "gender":"Female"}
+    defaults = {"credit": 376, "age": 29, "tenure": 4, "balance": 115046.0, "products": 4,
+                "country": "Germany", "card": "Yes", "active": "No", "salary": 119346.0, "gender": "Female"}
 else:
-    defaults = {"credit":650, "age":38, "tenure":5, "balance":0.0, "products":1,
-                "country":"France", "card":"Yes", "active":"Yes", "salary":50000.0, "gender":"Male"}
+    defaults = {"credit": 650, "age": 38, "tenure": 5, "balance": 0.0, "products": 1,
+                "country": "France", "card": "Yes", "active": "Yes", "salary": 50000.0, "gender": "Male"}
 
 # ==================== INPUT FORM ====================
 with st.form("churn_form"):
@@ -145,18 +191,18 @@ with st.form("churn_form"):
         tenure = st.slider("📅 Tenure (years)", 0, 10, defaults["tenure"])
         balance = st.number_input("💰 Balance ($)", min_value=0.0, max_value=250000.0,
                                   value=defaults["balance"], step=1000.0)
-        num_products = st.selectbox("🏦 Number of Products", [1, 2, 3, 4], index=defaults["products"]-1)
+        num_products = st.selectbox("🏦 Number of Products", [1, 2, 3, 4], index=defaults["products"] - 1)
 
     with c2:
         country = st.selectbox("🌍 Country", ["France", "Spain", "Germany"],
-                              index=["France", "Spain", "Germany"].index(defaults["country"]))
+                               index=["France", "Spain", "Germany"].index(defaults["country"]))
         gender = st.radio("👤 Gender", ["Male", "Female"], index=0 if defaults["gender"] == "Male" else 1)
         has_cr_card = st.radio("💳 Has Credit Card?", ["Yes", "No"], index=0 if defaults["card"] == "Yes" else 1)
         is_active = st.radio("✅ Is Active Member?", ["Yes", "No"], index=0 if defaults["active"] == "Yes" else 1)
         salary = st.number_input("💵 Estimated Salary ($)", min_value=0.0, max_value=200000.0,
                                  value=defaults["salary"], step=1000.0)
 
-    submitted = st.form_submit_button("🔮 Predict Churn Risk", use_container_width=True)
+    submitted = st.form_submit_button("🔮 Predict Churn Risk", use_container_width=True, type="primary")
 
 # ==================== PREDICTION ====================
 if submitted:
@@ -174,9 +220,13 @@ if submitted:
         prob = model.predict_proba(scaled)[0]
 
         if prediction == 1:
-            st.markdown(f"<div class='result-box' style='background:linear-gradient(135deg, #dc2626, #ef4444);'>HIGH RISK: Customer is likely to LEAVE!<br>Churn Probability: <b>{prob[1]:.1%}</b></div>", unsafe_allow_html=True)
+            st.markdown(
+                f"<div class='result-box' style='background:linear-gradient(135deg, #dc2626, #ef4444);'>HIGH RISK: Customer is likely to LEAVE!<br>Churn Probability: <b>{prob[1]:.1%}</b></div>",
+                unsafe_allow_html=True)
         else:
-            st.markdown(f"<div class='result-box' style='background:linear-gradient(135deg, #10b981, #34d399);'>LOW RISK: Customer is likely to STAY!<br>Stay Probability: <b>{prob[0]:.1%}</b></div>", unsafe_allow_html=True)
+            st.markdown(
+                f"<div class='result-box' style='background:linear-gradient(135deg, #10b981, #34d399);'>LOW RISK: Customer is likely to STAY!<br>Stay Probability: <b>{prob[0]:.1%}</b></div>",
+                unsafe_allow_html=True)
 
         st.progress(prob[1])
         st.caption(f"Churn Risk: {prob[1]:.1%}  |  Stay Chance: {prob[0]:.1%}")
@@ -222,7 +272,7 @@ with st.expander("❓ Need Help Understanding the Fields?", expanded=False):
 
 # ==================== FOOTER WITH ONLY CLICKABLE ICONS ====================
 st.markdown("---")
-st.markdown("<h3 style='text-align:center; color:#ffd7ba; margin-bottom:30px;'>💖 Arun</h3>", unsafe_allow_html=True)
+st.markdown("<h3 style='text-align:center; color:#ffd7ba; margin-bottom:30px;'>Data-driven decisions, real banking insights, and predictions that matter — built with care 💖. from Arun</h3>", unsafe_allow_html=True)
 
 import streamlit.components.v1 as components
 
@@ -305,4 +355,3 @@ st.markdown("""
     <span>Built with Streamlit • Random Forest Model • Real Banking Insights</span>
 </div>
 """, unsafe_allow_html=True)
-
