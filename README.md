@@ -1,23 +1,29 @@
 **Bank Customer Churn Prediction**
 
-This project predicts whether a bank customer will churn (leave the bank) using a Random Forest classifier. It features data preprocessing, handling class imbalance, model training, evaluation, and deployment as an interactive web app with real-time predictions.
+This project builds a machine learning model to predict bank customer churn and deploys it as an interactive Streamlit application, enabling real-time identification of customers at risk of leaving the bank.
 
 **🔧 Technologies Used**:
-Python,
-NumPy, Pandas,
-Scikit-Learn,
-Joblib,
-Streamlit
+
+➡️ **Programming Language:** Python
+
+➡️ **Data Analysis & Visualization:** Pandas, NumPy, Matplotlib, Seaborn
+
+➡️ **Machine Learning:** Scikit-learn
+
+➡️ **Model Deployment:** Streamlit
+
+➡️ **Model Serialization:** Joblib
+
 
 **📊 Model Performance**
 
-➡️ Accuracy: 0.8550
+➡️ **Accuracy:** 0.8550
 
-➡️ Precision: 0.6324
+➡️ **Precision:** 0.6324
 
-➡️ Recall: 0.6260
+➡️ **Recall:** 0.6260
 
-➡️ F1-Score: 0.6292
+➡️ **F1-Score:** 0.6292
 
 **🧠 Model Pipeline**
 
