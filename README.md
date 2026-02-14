@@ -1,69 +1,78 @@
-**Bank Customer Churn Prediction**
+# 🏦 Bank Customer Churn Prediction
 
-This project builds a machine learning model to predict bank customer churn and deploys it as an interactive Streamlit application, enabling real-time identification of customers at risk of leaving the bank.
+### **Identifying At-Risk Customers with Machine Learning**
 
-**🔧 Technologies Used**:
+[![Python](https://img.shields.io/badge/Python-3.10%2B-blue?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org/)
+[![Scikit-Learn](https://img.shields.io/badge/scikit--learn-F7931E?style=for-the-badge&logo=scikit-learn&logoColor=white)](https://scikit-learn.org/)
+[![Streamlit](https://img.shields.io/badge/Streamlit-FF4B4B?style=for-the-badge&logo=streamlit&logoColor=white)](https://streamlit.io/)
+[![Live App](https://img.shields.io/badge/Live-App-success?style=for-the-badge&logo=streamlit)](https://customerbankchurn.streamlit.app/)
 
-➡️ **Programming Language:** Python
+---
 
-➡️ **Data Analysis & Visualization:** Pandas, NumPy, Matplotlib, Seaborn
+## 📖 Overview
 
-➡️ **Machine Learning:** Scikit-learn
+**Customer retention is cheaper than acquisition.**
 
-➡️ **Model Deployment:** Streamlit
+This project utilizes a **Machine Learning** approach to predict whether a bank customer is likely to churn (leave the bank) based on their profile and activity. By analyzing factors such as credit score, geography, and balance, the model identifies "at-risk" customers, enabling proactive retention strategies.
 
-➡️ **Model Serialization:** Joblib
+The solution is deployed as an interactive **Streamlit Web Application**, providing real-time risk assessments and probability scores.
 
+> *"Turning data into retention strategies."*
 
-**📊 Model Performance**
+---
 
-➡️ **Accuracy:** 0.8550
+## 📱 Web App Features
 
-➡️ **Precision:** 0.6324
+Experience the predictive model in action:
 
-➡️ **Recall:** 0.6260
+👉 **[Launch the Live App](https://customerbankchurn.streamlit.app/)**
 
-➡️ **F1-Score:** 0.6292
+* **⚡ Real-Time Prediction:** Instant churn probability calculation based on user inputs.
+* **👥 Preset Profiles:** Quickly test the model with "Safe" vs. "Risky" customer scenarios.
+* **📊 Risk Assessment:** Visual probability indicators with a professional dark-themed UI.
+* **❓ Feature Insights:** Expandable help sections explaining the impact of each variable.
 
-**🧠 Model Pipeline**
+---
 
-➡️Data Cleaning & Feature Engineering (one-hot encoding for Geography)
+## 📊 Model Performance
 
-➡️Handling Class Imbalance (class_weight='balanced')
+The **Random Forest Classifier** was selected for its robustness and ability to handle complex data structures. Performance metrics on the test set:
 
-➡️Train–Test Split
+* **✅ Accuracy:** `85.50%`
+* **🎯 Precision:** `0.6324`
+* **🔎 Recall:** `0.6260`
+* **⚖️ F1-Score:** `0.6292`
 
-➡️Feature Scaling (StandardScaler)
+*Note: The model utilizes `class_weight='balanced'` to effectively handle the imbalance between churned and retained customers.*
 
-➡️Model Training (Random Forest)
+---
 
-➡️Evaluation
+## 🛠️ Tools & Technologies Used
 
-➡️Saving Model & Scaler (.joblib files)
+* **🐍 Python:** Core programming language.
+* **🐼 Pandas & NumPy:** For data manipulation and analysis.
+* **🌲 Scikit-Learn:** Used for model training (Random Forest), evaluation, and preprocessing.
+* **⚙️ Joblib:** Used for serializing the model and scaler for deployment.
+* **🌐 Streamlit:** The framework used to build the interactive web dashboard.
 
-**📱 Web App Features** 
+---
 
-➡️Interactive Streamlit dashboard with real-time churn prediction (https://customerbankchurn.streamlit.app/)
+## ⚙️ The Workflow (Pipeline)
 
-➡️Preset profiles (Safe / Risky customer)
+The project follows a rigorous ML pipeline from raw data to deployment.
 
-➡️Probability visualization & risk assessment
+```mermaid
+graph TD;
+    A["📂 Bank Customer Data
+          (CSV)"] -->|Cleaning & Encoding| B{"⚙️ Preprocessing
+           (One-Hot & Scaling)"};
+    B -->|Handling Imbalance| C["🌲 Random Forest Model
+         (Class Weight: Balanced)"];
+    C -->|Evaluation| D["📊 Model Metrics
+          (Acc: 85.5%)"];
+    D -->|Deployment| E["📱 Streamlit Web App
+         (Real-time Risk Scoring)"];
 
-➡️Professional dark-themed UI with hover effects
-
-➡️Detailed feature explanations in expandable help section
-
-**📁 Project Files**
-
-➡️Churn_Prediction.joblib – Trained Random Forest model
-
-➡️scaler.joblib – Saved StandardScaler
-
-➡️app.py – Streamlit web application
-
-➡️notebook.ipynb – Complete workflow & experimentation
-
-➡️README.md – Project documentation & setup guide
-
-<img width="1911" height="803" alt="image" src="https://github.com/user-attachments/assets/0956faab-42ab-4549-8129-998e81bdd0ac" />
-
+    style A fill:#f9f,stroke:#333,stroke-width:2px
+    style C fill:#bbf,stroke:#333,stroke-width:2px
+    style E fill:#bfb,stroke:#333,stroke-width:2px
